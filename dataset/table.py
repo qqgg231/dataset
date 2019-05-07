@@ -83,9 +83,8 @@ class Table(object):
         return True
 
     def insert_ignore(self, row, keys, ensure=None, types=None):
-        """Add a ``row`` dict into the table if the row does not exist.
-
-        If rows with matching ``keys`` exist they will be added to the table.
+        """Add a ``row`` dict into the table if the row containing the 
+        same ``keys`` values does not exist.
 
         Setting ``ensure`` results in automatically creating missing columns,
         i.e., keys of the row are not table columns.
@@ -98,7 +97,9 @@ class Table(object):
         ::
 
             data = dict(id=10, title='I am a banana!')
-            table.insert_ignore(data, ['id'])
+            table.insert_ignore(data, ['id'])  # will not insert if table contains row where id=10, even if ``title`` is different
+            
+            
         """
         row = self._sync_columns(row, ensure, types=types)
         if self._check_ensure(ensure):
